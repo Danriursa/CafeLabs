@@ -1,0 +1,36 @@
+{
+  "name": "cafelabs",
+  "version": "1.0.0",
+  "description": "Prueba desarrollador Labs",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Danriursa/CafeLabs.git"
+  },
+  "keywords": [
+    "Mongo",
+    "Node",
+    "js",
+    "API",
+    "Rest",
+    "Clouster",
+    "OpenAPI"
+  ],
+  "author": "Daniel Ricardo Urbina Sandoval",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Danriursa/CafeLabs/issues"
+  },
+  "homepage": "https://github.com/Danriursa/CafeLabs#readme",
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongoose": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
