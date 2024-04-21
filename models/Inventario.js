@@ -7,7 +7,8 @@ const inventarioSchema = new Schema({
         ref: 'Productos'
     },
     stock:{
-        type: Number
+        type: Number,
+        min:[0,"El minimo no puede ser cero"]
     },
     vendido:{
         type: Number
