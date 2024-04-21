@@ -56,34 +56,30 @@ const actualizarInventario = async (req, res, next) => {
     }
 };
 
+
 const actualizarInventarioNuevo = async (req, res, next) => {
     const { id } = req.params;
-    const { vendido } = req.body;
-    const { stock } = req.params;
-    
+    const { vendido, stock } = req.body;
     try {
-        // Actualizar el inventario directamente con findByIdAndUpdate
-
-        const nuevoStock = stock-vendido
-        if (nuevoStock >= 0) {
+        const inventario = await Inventario.findById(id);
+        if (!inventario) {
+            return res.status(404).json({ message: "Inventario no encontrado" });
+        }
+        const nuevoStock = inventario.stock + stock - vendido;
+        if (nuevoStock < 0) {
             return res.status(400).json({ message: "No se puede vender más de lo que hay en stock" });
         }
         const actualizadoInventario = await Inventario.findByIdAndUpdate(id, {
-            $inc: { stock: -vendido, vendido: vendido }
+            $inc: { stock: stock - vendido, vendido: vendido }
         }, { new: true });
-
-        // Verificar si el inventario fue encontrado y actualizado
-        if (!actualizadoInventario) {
-            return res.status(404).json({ message: "Inventario no encontrado" });
-        }
-
-        // Responder con el inventario actualizado
         res.json(actualizadoInventario);
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Error al actualizar el inventario" });
     }
 };
+
+
 
 
 export {
