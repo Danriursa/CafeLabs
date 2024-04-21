@@ -1,10 +1,54 @@
 import Pedido from '../models/Pedido.js';
+import axios from 'axios';
+
+
+const obtenerPronosticoDelClima = async (latitud, longitud) => {
+    const API_KEY = process.env.API_KEY;
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitud}&lon=${longitud}&appid=${API_KEY}&units=metric`;
+    
+    try {
+        const respuesta = await axios.get(url);
+        const temperatura = respuesta.data.main.temp;
+        return  temperatura ;
+    } catch (error) {
+        console.error('Error al obtener el clima:', error);
+        throw new Error('Error al obtener el clima');
+    }
+};
+
+const obtenerCoordenadasPorCiudad = async (nombreCiudad) => {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(nombreCiudad)}`;
+    
+    try {
+        const respuesta = await axios.get(url);
+        if (respuesta.data && respuesta.data.length > 0) {
+            const { lat, lon } = respuesta.data[0];
+            return { latitud: lat, longitud: lon };
+        } else {
+            throw new Error('No se encontraron resultados para la ciudad especificada');
+        }
+    } catch (error) {
+        console.error('Error al obtener las coordenadas:', error);
+        throw new Error('Error al obtener las coordenadas');
+    }
+};
 
 const nuevoPedido = async (req, res, next) => {
-    const pedido = new Pedido(req.body);
     try {
-        console.log(req.body)
+        // Obtener las coordenadas y el clima de la ciudad
+        const ciudad = req.body.ciudad;
+        const { latitud, longitud } = await obtenerCoordenadasPorCiudad(ciudad);
+        const temperatura = await obtenerPronosticoDelClima(latitud, longitud);
+
+        // Crear un nuevo Pedido con la temperatura obtenida
+        const pedido = new Pedido({
+            ...req.body,
+            clima: temperatura
+        });
+
+        // Guardar el Pedido en la base de datos
         const nuevoPedido = await pedido.save();
+
         res.json(nuevoPedido);
     } catch (error) {
         console.log(error);
