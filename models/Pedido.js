@@ -15,6 +15,14 @@ const pedidoSchema = new Schema({
     {
         type: String,
         trim: true
+    },
+    ciudad:
+    {
+        type : String
+    },
+    clima:
+    {
+        type : Number
     }
 });
 
