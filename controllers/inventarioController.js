@@ -1,4 +1,4 @@
-import Inventario from '../models/Inventario.js'
+import Inventario from '../models/Inventario.js';
 
 const nuevoInventario = async (req, res, next) => {
     const inventario = new Inventario(req.body);

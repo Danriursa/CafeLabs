@@ -1,5 +1,11 @@
 import express from 'express'
-import {nuevoInventario,mostrarInventario, eliminarInventario, actualizarInventario, actualizarInventarioNuevo} from '../controllers/inventarioController.js'
+import {
+    nuevoInventario,
+    mostrarInventario,
+    eliminarInventario,
+    actualizarInventario,
+    actualizarInventarioNuevo
+} from '../controllers/inventarioController.js'
 
 const router = express.Router();
 
