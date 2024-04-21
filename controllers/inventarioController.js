@@ -13,13 +13,25 @@ const nuevoInventario = async (req, res, next) => {
 };
 
 const mostrarInventario = async (req, res, next) => {
+    const { pagina = 1, porPagina = 5 } = req.query;
+
     try {
-        const inventario = await Inventario.find({});
-        res.json(inventario);
+        const totalInventarios = await Inventario.countDocuments();
+        const inventario = await Inventario.find({})
+            .skip((pagina - 1) * porPagina)
+            .limit(porPagina);
+
+        const totalPaginas = Math.ceil(totalInventarios / porPagina);
+        const paginaSiguiente = pagina < totalPaginas;
+
+        res.json({
+            inventario,
+            paginaSiguiente,
+            pagina
+        });
     } catch (error) {
         console.log(error);
         next(error);
-        
     }
 };
 

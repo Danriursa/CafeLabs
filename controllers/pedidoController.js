@@ -35,18 +35,15 @@ const obtenerCoordenadasPorCiudad = async (nombreCiudad) => {
 
 const nuevoPedido = async (req, res, next) => {
     try {
-        // Obtener las coordenadas y el clima de la ciudad
         const ciudad = req.body.ciudad;
         const { latitud, longitud } = await obtenerCoordenadasPorCiudad(ciudad);
         const temperatura = await obtenerPronosticoDelClima(latitud, longitud);
 
-        // Crear un nuevo Pedido con la temperatura obtenida
         const pedido = new Pedido({
             ...req.body,
             clima: temperatura
         });
 
-        // Guardar el Pedido en la base de datos
         const nuevoPedido = await pedido.save();
 
         res.json(nuevoPedido);
@@ -57,19 +54,27 @@ const nuevoPedido = async (req, res, next) => {
 };
 
 const mostrarPedido = async (req, res, next) => {
-    const { page = 1, perPage = 5 } = req.query;
+    const { pagina = 1, porPagina = 5 } = req.query;
 
     try {
-        const pedido = await Pedido.find({})
-            .skip((page - 1) * perPage)
-            .limit(perPage);
+        const totalPedidos = await Pedido.countDocuments();
+        const pedidos = await Pedido.find({})
+            .skip((pagina - 1) * porPagina)
+            .limit(porPagina);
 
-        res.json(pedido);
+        const totalPaginas = Math.ceil(totalPedidos / porPagina);
+        const paginaSiguiente = pagina < totalPaginas;
+
+        res.json({
+            pedidos,
+            paginaSiguiente
+        });
     } catch (error) {
         console.log(error);
         next(error);
     }
 };
+
 
 
 const eliminarPedido = async (req, res, next) => {

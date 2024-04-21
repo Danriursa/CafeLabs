@@ -13,14 +13,29 @@ const nuevoProducto = async (req, res, next) => {
 };
 
 const mostrarProducto = async (req, res, next) => {
+    const { pagina = 1, porPagina = 3 } = req.query;
+
     try {
-        const productos = await Productos.find({});
-        res.json(productos);
+        const totalProductoss = await Productos.countDocuments();
+        const productos = await Productos.find({})
+            .skip((pagina - 1) * porPagina)
+            .limit(porPagina);
+
+        const totalPaginas = Math.ceil(totalProductoss / porPagina);
+        const paginaSiguiente = pagina < totalPaginas;
+
+        res.json({
+            productos,
+            paginaSiguiente,
+            pagina
+        });
     } catch (error) {
         console.log(error);
         next(error);
     }
 };
+
+
 
 const mostrarProductoCategoria = async (req, res, next) => {
     try {
