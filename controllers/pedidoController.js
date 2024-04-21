@@ -57,14 +57,20 @@ const nuevoPedido = async (req, res, next) => {
 };
 
 const mostrarPedido = async (req, res, next) => {
+    const { page = 1, perPage = 5 } = req.query;
+
     try {
-        const pedido = await Pedido.find({});
+        const pedido = await Pedido.find({})
+            .skip((page - 1) * perPage)
+            .limit(perPage);
+
         res.json(pedido);
     } catch (error) {
         console.log(error);
         next(error);
     }
 };
+
 
 const eliminarPedido = async (req, res, next) => {
     const { id } = req.params;
@@ -87,9 +93,16 @@ const actualizarPedido = async (req, res, next) => {
     
     const pedido = await Pedido.findByIdAndUpdate(id);
 
-    pedido.producto = req.body.producto || producto.producto;
-    pedido.cantidad = req.body.cantidad || producto.cantidad;
-    pedido.metodopago = req.body.metodopago || producto.metodopago;
+    pedido.producto = req.body.producto || pedido.producto;
+    pedido.cantidad = req.body.cantidad || pedido.cantidad;
+    pedido.metodopago = req.body.metodopago || pedido.metodopago;
+    pedido.ciudad = req.body.ciudad || pedido.ciudad;
+
+    const ciudad = req.body.ciudad;
+        const { latitud, longitud } = await obtenerCoordenadasPorCiudad(ciudad);
+        const temperatura = await obtenerPronosticoDelClima(latitud, longitud);
+
+    pedido.clima = temperatura || pedido.clima;
 
     try {
         const actualizadoPedido = await pedido.save();
