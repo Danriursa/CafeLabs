@@ -8,11 +8,8 @@ const productosSchema = mongoose.Schema({
     valor:{
         type: Number
     },
-    stock:{
-        type: Number
-    },
-    vendidos:{
-        type: Number
+    categoria:{
+        type: String
     }
 });
 
