@@ -67,7 +67,8 @@ const mostrarPedido = async (req, res, next) => {
 
         res.json({
             pedidos,
-            paginaSiguiente
+            paginaSiguiente,
+            pagina
         });
     } catch (error) {
         console.log(error);
