@@ -137,9 +137,9 @@ const router = express.Router();
 /**
  * @swagger
  * /api/inventario/vender/{id}:
- *   put:
+ *   patch:
  *     summary: Actualizar el stock y las ventas de un registro del inventario por ID
- *     description: Actualiza el stock y las ventas de un registro del inventario con el ID proporcionado.
+ *     description: Actualiza el stock y las ventas de un registro del inventario con el ID proporcionado, es necesario registrar el valor que se desea agregar tanto al producto vendido como al stock del prodcuto, esto generará una actualización de cada registro. Si se genera una venta se reducira el mismo numero en la cantidad del stock de ese producto, pero si se agrega un producto al stock no afectara en nada al registro de vendidos.
  *     operationId: actualizarInventarioNuevo
  *     tags: [Inventario]
  *     parameters:
@@ -203,6 +203,6 @@ const router = express.Router();
 
 router.route('').get(mostrarInventario);
 router.route('/nuevo').post(nuevoInventario);
-router.route('/vender/:id').delete(eliminarInventario).put(actualizarInventario).put(actualizarInventarioNuevo);
+router.route('/vender/:id').delete(eliminarInventario).put(actualizarInventario).patch(actualizarInventarioNuevo);
 
 export default router;
