@@ -14,7 +14,7 @@ const nuevoInventario = async (req, res, next) => {
 
 const mostrarInventario = async (req, res, next) => {
     const { pagina = 1, porPagina = 5 } = req.query;
-
+    
     try {
         const totalInventarios = await Inventario.countDocuments();
         const inventario = await Inventario.find({})
