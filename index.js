@@ -16,7 +16,7 @@ const app= express();
 app.use(express.json()); // Para analizar datos JSON en el cuerpo de la solicitud
 app.use(express.urlencoded({ extended: true }));
 
-//Rutas¬
+//Rutas
 app.use('/api/documentacion',swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 app.use('/api/productos',productosRoutes);
 app.use('/api/pedidos',pedidoRoutes);
