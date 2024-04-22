@@ -29,7 +29,7 @@ Antes de comenzar, asegúrate de tener instalado lo siguiente en tu sistema:
 
 4. Crea un archivo `.env` en la raíz del proyecto y agrega las siguientes variables de entorno:
 
-    PORT = # Puerto en el que se ejecutará el servidor
+    PORT = # Puerto en el que se ejecutará el servidor.
     DB_ATLAS = tu_url_de_conexión_a_MongoDB
 
 
@@ -38,6 +38,8 @@ Antes de comenzar, asegúrate de tener instalado lo siguiente en tu sistema:
 Para iniciar el servidor, ejecuta el siguiente comando:
 
     npm start
+
+## Disponibilidad
 
 
 La aplicación estará disponible en `https://cafelabs.onrender.com`.
