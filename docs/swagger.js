@@ -17,13 +17,14 @@ const swaggerDefinition = {
         },
     },
     servers: [
-        {
-            url: 'http://localhost:4000',
-            description: 'Servidor local',
-        },
+
         {
             url: 'https://cafelabs.onrender.com',
             description: 'Servidor produccion',
+        },
+        {
+            url: 'http://localhost:4000',
+            description: 'Servidor local',
         },
     ],
 };
